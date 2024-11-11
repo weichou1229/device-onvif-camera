@@ -93,10 +93,11 @@ func newSubscriptionRequest(attributes map[string]interface{}, requestData []byt
 
 	messageLimit, ok := attributes[DefaultMessageLimit]
 	if request.MessageLimit == nil && ok {
-		val, err := strconv.Atoi(fmt.Sprint(messageLimit))
+		int64val, err := strconv.ParseInt(fmt.Sprint(messageLimit), 10, 32)
 		if err != nil {
 			return nil, errors.NewCommonEdgeX(errors.KindServerError, fmt.Sprintf("failed to parse the request attribute '%s'", DefaultMessageLimit), err)
 		}
+		val := int(int64val)
 		request.MessageLimit = &val
 	}
 	return request, nil
